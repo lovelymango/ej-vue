@@ -47,20 +47,6 @@ export default {
     }
   },
   actions: {
-    async batchDeleteCustomer(context, ids) {
-      // 1. 批量删除
-      const response = await post_array('/customer/batchDelete', { ids })
-      // 2. 分发
-      // eslint-disable-next-line quotes
-      context.dispatch("findAllCustomers")
-      // 3. 返回结果
-      return response
-    },
-    async deleteCustomerById(context, id) {
-      const response = await request.get('/customer/deleteById?id=' + id)
-      context.dispatch('findAllCustomers')
-      return response
-    },
     async findAllCustomers({ dispatch, commit }) {
       // 1. ajax查询
       commit('beginLoading')
@@ -70,17 +56,6 @@ export default {
       setTimeout(() => {
         commit('endLoading')
       }, 1000)
-    },
-    // payload 顾客信息
-    async saveOrUpdateCustomer({ commit, dispatch }, payload) {
-      // 1. 保存或更新
-      const response = await post('/customer/saveOrUpdate', payload)
-      // 2. 刷新页面
-      dispatch('findAllCustomers')
-      // 3. 关闭模态框
-      commit('closeModal')
-      // 4. 提示
-      return response
     }
   }
 }
