@@ -1,5 +1,5 @@
 <template>
   <div class="customer">
-    提现审核。。。。
+    提现审核
   </div>
 </template>

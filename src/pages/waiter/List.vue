@@ -1,27 +1,21 @@
 <template>
   <div class="waiter">
-		<!-- 按钮 -->
-		<div>
-			<el-button @click="batchCheckHandler"  size="small" type="danger">批量审核</el-button>
-		</div>
 		<!-- 表格 -->
-		<div v-loading="loading">
-      <el-table :data="waiters" size="mini"  @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="编号"></el-table-column>
-        <el-table-column prop="realname" label="姓名"></el-table-column>
-        <el-table-column prop="telephone" label="手机号"></el-table-column>
-        <el-table-column prop="idCard" label="身份证号"></el-table-column>
-        <el-table-column prop="bankCard" label="银行卡号"></el-table-column>
-        <el-table-column prop="registerTime" label="注册时间"></el-table-column>
-        <el-table-column prop="status" label="状态" ></el-table-column>
-        <el-table-column label="操作" width="80" align="center">
+      <el-table :data="filterWaitersByEnabled(status)" size="mini">
+        <el-table-column prop="id" label="编号" width="50px" align="center"></el-table-column>
+        <el-table-column prop="realname" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="telephone" label="手机号" align="center"></el-table-column>
+        <el-table-column prop="idCard" label="身份证号" align="center" width="150px"></el-table-column>
+        <el-table-column prop="bankCard" label="银行卡号" align="center"></el-table-column>
+        <el-table-column prop="registerTime" label="注册时间" align="center" width="150px"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center" ></el-table-column>
+        <el-table-column label="操作" width="50" align="center">
           <template #default="record">
-              <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+             <a href="" @click.prevent="toDetailsHandler(record.row)" class="el-icon-view"></a>
           </template>
         </el-table-column>
       </el-table>
-		</div>
+    <!-- 表格 -->
   </div>
 </template>
 <script>
@@ -29,46 +23,29 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
 export default {
   data(){
     return {
-      waiter:{},
       ids:[],
-      rules:{
-        realname: [
-          { required: true, message: '请输入姓名', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
-        ],
-        telephone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' }
-        ]
-      }
+      status:"审核通过"
     }
   },
   computed:{
-    ...mapState("waiter",["waiters","visible","title","loading"])
+    ...mapState("waiter",["waiters"]),
+    ...mapGetters("waiter",["filterWaitersByEnabled"])
   },
   created(){
     this.findAllWaiters();
   },
   methods:{
-    ...mapMutations("waiter",["showModal","closeModal","setTitle"]),
-    ...mapActions("waiter",["findAllWaiters","saveOrUpdateWaiter","deleteWaiterById","batchDeleteWaiter"]),
+    ...mapActions("waiter",["findAllWaiters"]),
     // 普通方法
     toDetailsHandler(waiter){
       //跳转到详情页面
-      // this.$router.push("/waiterDetails")
       this.$router.push({
         path:"/waiter/details",
-        query:{id:waiter.id}
+        query:{
+          id:waiter.id,
+          waiter:waiter
+          }
       })
-    },
-    handleSelectionChange(val) {
-      this.ids = val.map(item=>item.id);
-    },
-    
-    batchCheckHandler(){
-      // this.batchDeleteWaiter(this.ids)
-      // .then((response)=>{
-      //   this.$message({type:"success",message:response.statusText});
-      // })
     }
 
   }
@@ -76,5 +53,11 @@ export default {
 }
 </script>
 <style scoped>
-
+.el-icon-view{
+  font-size: 15px;
+  font-weight: bold;
+}
+.el-icon-view:hover{
+   color:#24ABF2;
+}
 </style>

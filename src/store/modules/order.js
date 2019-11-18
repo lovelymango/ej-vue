@@ -9,6 +9,7 @@ export default {
     message: '',
     customers: [],
     customerName: {},
+    waiters: [],
     id: {}
   },
   getters: {

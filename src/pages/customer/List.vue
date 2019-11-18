@@ -1,21 +1,18 @@
 <template>
   <div class="customer">
-    <h2>顾客管理</h2>
 		<!-- 表格 -->
-		<div v-loading="loading">
-      <el-table :data="customers" size="mini"  @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="编号"></el-table-column>
-        <el-table-column prop="realname" label="姓名"></el-table-column>
-        <el-table-column prop="telephone" label="手机号"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
-        <el-table-column label="操作">
+      <el-table :data="customers" size="mini">
+        <el-table-column prop="realname" label="姓名" align="center" width="100px"></el-table-column>
+        <el-table-column prop="telephone" label="手机号" align="center"></el-table-column>
+        <el-table-column prop="password" label="密码" align="center"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center"></el-table-column>
+        <el-table-column label="操作" width="100px" align="center">
           <template #default="record">
-              <el-button @click.prevent = "toDetailsHandler(record.row)" type="primary" size="small" icon="el-icon-tickets" plain circle></el-button>
+              <a href="" @click.prevent="toDetailsHandler(record.row)" class="el-icon-view"></a>
           </template>
         </el-table-column>
       </el-table>
-		</div>
+<!-- 表格 -->
   </div>
 </template>
 <script>
@@ -23,19 +20,17 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
 export default {
   data(){
     return {
-      customer:{},
-      ids:[]
+      customer:{}
     }
   },
   computed:{
-    ...mapState("customer",["customers","visible","title","loading"]),
+    ...mapState("customer",["customers"]),
     ...mapGetters("customer",["orderCustomer","customerSize"])
   },
   created(){
     this.findAllCustomers();
   },
   methods:{
-    ...mapMutations("customer",["showModal","closeModal","setTitle"]),
     ...mapActions("customer",["findAllCustomers"]),
     // 普通方法
     toDetailsHandler(customer){
@@ -43,15 +38,24 @@ export default {
       // this.$router.push("/customerDetails")
       this.$router.push({
         path:"/customer/details",
-        query:{id:customer.id}
+        query:{
+          id:customer.id,
+          customer:customer
+        }
       })
-    },
-    handleSelectionChange(val) {
-      this.ids = val.map(item=>item.id);
     }
   }
+
 }
 </script>
 <style scoped>
+.el-icon-view{
+  font-size: 15px;
+  font-weight: bold;
+}
+.el-icon-view:hover{
+   color:#24ABF2;
+}
+
 
 </style>

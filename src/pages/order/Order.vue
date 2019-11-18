@@ -101,7 +101,9 @@
      <div class="dialog-content">
         <el-radio-group v-model="params.waiterId">
           <div v-for="w in waiters" :key="w.id" >
+            <div v-if="w.status === '审核通过'">
             <el-radio style="line-height:3em" :label="w.id" >{{w.realname}}</el-radio>
+            </div>
           </div>
         </el-radio-group>
      </div>
