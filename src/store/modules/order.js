@@ -10,6 +10,9 @@ export default {
     customers: [],
     customerName: {},
     waiters: [],
+    corders: [],
+    worders: [],
+    total: '',
     id: {}
   },
   getters: {
@@ -25,11 +28,23 @@ export default {
     resetOrders(state, orders) {
       state.orders = orders
     },
+    customerOrders(state, corders) {
+      state.corders = corders
+    },
+    waiterOrders(state, worders) {
+      state.worders = worders
+    },
     resetMessage(state, message) {
       state.message = message
     },
-    queryOrder(state, corder) {
-      state.customerName = corder
+    queryOrder(state, morder) {
+      state.customerName = morder
+    },
+    overOrders(state, total) {
+      state.total = total
+    },
+    waiterMoney(state, wtotal) {
+      state.wtotal = wtotal
     }
   },
   actions: {
@@ -69,6 +84,44 @@ export default {
       const response = await get('/order/query', { customerId })
       // eslint-disable-next-line no-undef
       commit('queryOrder', response.data)
+    },
+    // 根据顾客id查询订单
+    async findAllOrdersByCid({ commit }, customerId) {
+      const response = await get('/order/query', { customerId })
+      response.data.forEach((item) => {
+        item.orderTime = moment(item.orderTime).format('YYYY-MM-DD HH:mm:ss')
+        item.total = '￥' + item.total
+      })
+      console.log('llll', response.data)
+      commit('customerOrders', response.data)
+    },
+    // 根据员工id查询订单
+    async findAllOrdersByWid({ commit }, waiterId) {
+      const response = await get('/order/query', { waiterId })
+      let wtotal = 0
+      response.data.forEach((item) => {
+        if (item.status === '已完成') {
+          wtotal = wtotal + item.total
+        } else {
+          item.orderTime = moment(item.orderTime).format('YYYY-MM-DD HH:mm:ss')
+          item.total = '￥' + item.total
+        }
+        return wtotal
+      })
+      // console.log("llll",response.data)
+      commit('waiterOrders', response.data)
+      commit('waiterMoney', wtotal)
+    },
+    async findAllOrdersByStatus({ commit }) {
+      const response = await get('/order/findAll')
+      let total = 0
+      response.data.forEach((item) => {
+        if (item.status === '已完成') {
+          total = total + item.total
+        }
+        return total
+      })
+      commit('overOrders', total)
     }
   }
 }

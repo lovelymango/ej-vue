@@ -99,7 +99,7 @@ export default {
     this.customer=this.$route.query.customer;
     this.loadAddress();
     this.loadOrders();
-    console.log(this.corders)
+    // console.log(this.corders)
     
   },
   computed:{

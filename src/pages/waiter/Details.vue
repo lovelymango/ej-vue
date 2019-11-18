@@ -94,7 +94,7 @@ export default {
     }
   },
   created(){
-    console.log(this.$route);
+    // console.log(this.$route);
     this.id = this.$route.query.id;
     this.waiter=this.$route.query.waiter;
     this.loadOrders();

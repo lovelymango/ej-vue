@@ -5,7 +5,7 @@
         <el-table-column prop="realname" label="姓名" align="center" width="100px"></el-table-column>
         <el-table-column prop="telephone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="password" label="密码" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态" align="center"></el-table-column>
+        <el-table-column prop="qq" label="qq" align="center"></el-table-column>
         <el-table-column label="操作" width="100px" align="center">
           <template #default="record">
               <a href="" @click.prevent="toDetailsHandler(record.row)" class="el-icon-view"></a>

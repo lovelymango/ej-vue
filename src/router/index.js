@@ -34,6 +34,10 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
+    path: '/',
+    redirect: '/login'
+  },
+  {
     path: '/redirect',
     component: Layout,
     hidden: true,
@@ -77,10 +81,15 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/login'
+  // },
   {
-    path: '/',
+    path: '/head',
     component: Layout,
-    redirect: '/head',
+    redirect: '/head/head',
     children: [
       {
         path: 'head',
@@ -180,19 +189,19 @@ export const asyncRoutes = [
   }, {
     path: '/check',
     component: Layout,
-    meta: { title: '审核管理', icon: 'tab' },
+    meta: { title: '审核管理', icon: 'lock' },
     children: [
       {
         path: 'waiter',
         component: () => import('@/pages/check/WaiterCheck'),
         name: 'waiter',
-        meta: { title: '员工审核', icon: 'tab' }
+        meta: { title: '员工审核', icon: 'user' }
       },
       {
         path: 'withdraw',
         component: () => import('@/pages/check/WithdrawCheck'),
         name: 'withdraw',
-        meta: { title: '提现审核', icon: 'tab' }
+        meta: { title: '提现审核', icon: 'money' }
       }
     ]
   },
@@ -223,7 +232,7 @@ export const asyncRoutes = [
         path: 'total',
         component: () => import('@/pages/total/Total'),
         name: 'total',
-        meta: { title: '总额管理', icon: 'order' }
+        meta: { title: '总额管理', icon: 'star' }
       }
     ]
   },

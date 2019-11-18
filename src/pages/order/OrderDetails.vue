@@ -42,6 +42,7 @@
                      <el-form-item label="顾客具体地址">     
                         <span>{{ c.address.address }}</span>
                     </el-form-item>
+                    <div v-if=obj>
                     <el-form-item label="接收订单员工编号">     
                         <span>{{ c.waiter.id }}</span>
                     </el-form-item>
@@ -52,6 +53,7 @@
                         <span>{{ c.waiter.telephone }}</span>
                     </el-form-item>
                     </div>
+                   </div>
                 </el-row>
             </el-row>
         </el-form>
@@ -72,7 +74,8 @@ export default {
   data(){
     return{
       order:{},
-      customerId:''
+      customerId:'',
+      obj:false
     }
   },
   computed:{
@@ -82,7 +85,15 @@ export default {
     // console.log("当前路由",this.$route);
     this.order = this.$route.query.order; 
     this.customerId = this.$route.query.order.customerId;   
-    this.findOrderQuery(this.customerId)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+    this.findOrderQuery(this.customerId); 
+    if(this.$route.query.order.status==="待接单"){
+        this.obj = false;
+    } else if(this.$route.query.order.status==="待派单"){
+        this.obj = false;
+    } else {
+        this.obj = true;
+    }  
+    console.log(this.obj)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
   },
   methods:{
     ...mapActions( "order",["findOrderQuery"]),
